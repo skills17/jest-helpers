@@ -1,0 +1,13 @@
+{
+  "presets": [
+    ["@babel/preset-env", {
+      "targets": {
+        "node": 22
+      }
+    }],
+    "@babel/typescript"
+  ],
+  "ignore": [
+    "**/*.d.ts"
+  ]
+}
