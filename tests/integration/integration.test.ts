@@ -1,55 +1,56 @@
-import fs from 'fs';
-import path from 'path';
-import { executeJest } from './utils';
+import fs from 'node:fs';
+import path from 'node:path';
+import process from 'node:process';
+import {executeJest} from './utils.ts';
 
 describe('integration tests', () => {
-  // get all integration tests
-  const integrationTests = fs.readdirSync(__dirname).filter((file) => {
-    const fileInfo = fs.statSync(path.resolve(__dirname, file));
-    return fileInfo.isDirectory();
-  });
+	// Get all integration tests
+	const integrationTests = fs.readdirSync(__dirname).filter(file => {
+		const fileInfo = fs.statSync(path.resolve(__dirname, file));
+		return fileInfo.isDirectory();
+	});
 
-  it.each(integrationTests)(
-    '%s - console reporter',
-    async (test) => {
-      // execute jest in the subdirectory
-      const { output } = await executeJest(test, 'run');
-      const resultOutput = output
-        .substring(output.indexOf('------------       RESULT       ------------'))
-        .trim();
+	it.each(integrationTests)(
+		'%s - console reporter',
+		async test => {
+			// Execute jest in the subdirectory
+			const {output} = await executeJest(test, 'run');
+			const resultOutput = output
+				.slice(Math.max(0, output.indexOf('------------       RESULT       ------------')))
+				.trim();
 
-      // update expected output if required
-      if (process.env.UPDATE_EXPECTED_OUTPUT === '1') {
-        fs.writeFileSync(path.resolve(__dirname, test, 'expected.txt'), resultOutput);
-      }
+			// Update expected output if required
+			if (process.env.UPDATE_EXPECTED_OUTPUT === '1') {
+				fs.writeFileSync(path.resolve(__dirname, test, 'expected.txt'), resultOutput);
+			}
 
-      // read expected output
-      const expectedOutput = fs.readFileSync(path.resolve(__dirname, test, 'expected.txt'));
+			// Read expected output
+			const expectedOutput = fs.readFileSync(path.resolve(__dirname, test, 'expected.txt'));
 
-      expect(resultOutput).toEqual(expectedOutput.toString().trim());
-    },
-    60000,
-  );
+			expect(resultOutput).toEqual(expectedOutput.toString().trim());
+		},
+		60_000,
+	);
 
-  it.each(integrationTests)(
-    '%s - json reporter',
-    async (test) => {
-      // execute jest in the subdirectory
-      const { output } = await executeJest(test, 'run --json');
-      const resultOutput = output
-        .substring(output.indexOf('------------       RESULT       ------------'))
-        .trim();
+	it.each(integrationTests)(
+		'%s - json reporter',
+		async test => {
+			// Execute jest in the subdirectory
+			const {output} = await executeJest(test, 'run --json');
+			const resultOutput = output
+				.slice(Math.max(0, output.indexOf('------------       RESULT       ------------')))
+				.trim();
 
-      // update expected output if required
-      if (process.env.UPDATE_EXPECTED_OUTPUT === '1') {
-        fs.writeFileSync(path.resolve(__dirname, test, 'expected.json'), resultOutput);
-      }
+			// Update expected output if required
+			if (process.env.UPDATE_EXPECTED_OUTPUT === '1') {
+				fs.writeFileSync(path.resolve(__dirname, test, 'expected.json'), resultOutput);
+			}
 
-      // read expected output
-      const expectedOutput = fs.readFileSync(path.resolve(__dirname, test, 'expected.json'));
+			// Read expected output
+			const expectedOutput = fs.readFileSync(path.resolve(__dirname, test, 'expected.json'));
 
-      expect(resultOutput).toEqual(expectedOutput.toString().trim());
-    },
-    60000,
-  );
+			expect(resultOutput).toEqual(expectedOutput.toString().trim());
+		},
+		60_000,
+	);
 });

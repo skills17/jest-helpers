@@ -8,6 +8,7 @@
     "declaration": true,
     "outDir": "lib",
     "types": ["jest"],
-    "typeRoots": ["node_modules/@types"]
+    "typeRoots": ["node_modules/@types"],
+    "allowImportingTsExtensions": true
   }
 }

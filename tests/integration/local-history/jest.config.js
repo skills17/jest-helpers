@@ -1,4 +1,4 @@
 module.exports = {
-  maxWorkers: 1,
-  testEnvironment: 'node',
+	maxWorkers: 1,
+	testEnvironment: 'node',
 };
