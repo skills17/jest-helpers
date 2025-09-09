@@ -26,9 +26,27 @@ It is suggested to add the following npm scripts:
 
 ```json
 "scripts": {
-"test": "skills17-jest run",
-"test:json": "skills17-jest run --json"
+    "test": "jest",
+    "test:json": "cross-env SKILLS17_JSON=true jest"
 },
+```
+
+`jest.config.ts`:
+
+```typescript
+import { JestConfigWithTsJest } from "ts-jest";
+
+const jsonOnlyReport = !!process.env["SKILLS17_JSON"];
+
+const config: JestConfigWithTsJest = {
+  clearMocks: true,
+  reporters: jsonOnlyReport
+    ? [["../../../lib/skills17-reporter", { json: jsonOnlyReport }]]
+    : ["default", "../../../lib/skills17-reporter"],
+  testEnvironment: "node",
+};
+
+export default config;
 ```
 
 This will provide the following commands:
@@ -44,19 +62,6 @@ folder of your task, next to the `package.json` file.
 
 See the [`@skills17/task-config`](https://github.com/skills17/task-config#configuration) package for a detailed
 description of all available properties in the `config.yaml` file.
-
-### CLI
-
-As seen in the installation instructions, the `skills17-jest` command is available.
-
-It is a thin wrapper around the `jest` command.
-
-All arguments to the command will be forwarded to `jest` so Jest can be used exactly the same way if this package
-wouldn't be installed.
-
-Additionally, the following new arguments are available:
-
-- `--json` output the test result with scored points in json to standard out
 
 ## License
 

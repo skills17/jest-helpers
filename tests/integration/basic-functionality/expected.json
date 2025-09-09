@@ -2,21 +2,13 @@
   "testResults": [
     {
       "group": "example.+",
-      "points": 2,
-      "maxPoints": 2,
+      "points": 1,
+      "maxPoints": 1,
       "strategy": "add",
       "manualCheck": false,
       "tests": [
         {
-          "name": "example-ArithmeticOperator",
-          "points": 1,
-          "maxPoints": 1,
-          "successful": true,
-          "required": false,
-          "manualCheck": false
-        },
-        {
-          "name": "example-BlockStatement",
+          "name": "adds 1 + 2 to equal 3",
           "points": 1,
           "maxPoints": 1,
           "successful": true,

@@ -14,7 +14,7 @@ describe('integration tests', () => {
 		'%s - console reporter',
 		async test => {
 			// Execute jest in the subdirectory
-			const {output} = await executeJest(test, 'run');
+			const {output} = await executeJest(test);
 			const resultOutput = output
 				.slice(Math.max(0, output.indexOf('------------       RESULT       ------------')))
 				.trim();
@@ -36,7 +36,8 @@ describe('integration tests', () => {
 		'%s - json reporter',
 		async test => {
 			// Execute jest in the subdirectory
-			const {output} = await executeJest(test, 'run --json');
+			process.env.SKILLS17_JSON = 'true';
+			const {output} = await executeJest(test);
 			const resultOutput = output
 				.slice(Math.max(0, output.indexOf('------------       RESULT       ------------')))
 				.trim();

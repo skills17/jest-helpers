@@ -16,7 +16,7 @@ describe('local history', () => {
 		expect(fs.existsSync(historyDir)).toEqual(false);
 
 		// Execute jest in the subdirectory
-		await executeJest('local-history', 'run');
+		await executeJest('local-history');
 
 		expect(fs.existsSync(historyDir)).toEqual(true);
 
@@ -33,21 +33,13 @@ describe('local history', () => {
 				{
 					// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 					group: history.testResults[0].group,
-					points: 2,
-					maxPoints: 2,
+					points: 1,
+					maxPoints: 1,
 					strategy: 'add',
 					manualCheck: false,
 					tests: [
 						{
-							name: 'example-ArithmeticOperator',
-							points: 1,
-							maxPoints: 1,
-							successful: true,
-							required: false,
-							manualCheck: false,
-						},
-						{
-							name: 'example-BlockStatement',
+							name: 'adds 1 + 2 to equal 3',
 							points: 1,
 							maxPoints: 1,
 							successful: true,
