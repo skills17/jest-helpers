@@ -16,12 +16,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Start containers
-      run: docker-compose up -d
+      run: docker compose up -d
     - name: Change permissions
-      run: docker-compose exec -T app chown -R node:node /workspaces/jest-helpers
+      run: docker compose exec -T app chown -R node:node /workspaces/jest-helpers
     - name: Install dependencies
-      run: docker-compose exec -T --workdir /workspaces/jest-helpers --user node app npm ci
+      run: docker compose exec -T --workdir /workspaces/jest-helpers --user node app npm ci
     - name: Build library
-      run: docker-compose exec -T --workdir /workspaces/jest-helpers --user node app npm run build
+      run: docker compose exec -T --workdir /workspaces/jest-helpers --user node app npm run build
     - name: Test
-      run: docker-compose exec -T --workdir /workspaces/jest-helpers --user node app npm test
+      run: docker compose exec -T --workdir /workspaces/jest-helpers --user node app npm test
