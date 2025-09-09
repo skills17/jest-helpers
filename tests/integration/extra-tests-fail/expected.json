@@ -1,0 +1,21 @@
+{
+  "testResults": [
+    {
+      "group": "example.+",
+      "points": 1,
+      "maxPoints": 1,
+      "strategy": "add",
+      "manualCheck": true,
+      "tests": [
+        {
+          "name": "adds 1 + 2 to equal 3",
+          "points": 1,
+          "maxPoints": 1,
+          "successful": true,
+          "required": false,
+          "manualCheck": true
+        }
+      ]
+    }
+  ]
+}
