@@ -26,8 +26,8 @@ It is suggested to add the following npm scripts:
 
 ```json
 "scripts": {
-    "test": "jest",
-    "test:json": "cross-env SKILLS17_JSON=true jest"
+"test": "jest",
+"test:json": "cross-env SKILLS17_JSON=true jest"
 },
 ```
 
@@ -39,11 +39,9 @@ import { JestConfigWithTsJest } from "ts-jest";
 const jsonOnlyReport = !!process.env["SKILLS17_JSON"];
 
 const config: JestConfigWithTsJest = {
-  clearMocks: true,
   reporters: jsonOnlyReport
-    ? [["../../../lib/skills17-reporter", { json: jsonOnlyReport }]]
-    : ["default", "../../../lib/skills17-reporter"],
-  testEnvironment: "node",
+    ? [["@skills17/jest-helpers", { json: jsonOnlyReport }]]
+    : ["default", "@skills17/jest-helpers"],
 };
 
 export default config;
