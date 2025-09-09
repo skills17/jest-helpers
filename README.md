@@ -39,11 +39,9 @@ import { JestConfigWithTsJest } from "ts-jest";
 const jsonOnlyReport = !!process.env["SKILLS17_JSON"];
 
 const config: JestConfigWithTsJest = {
-  clearMocks: true,
   reporters: jsonOnlyReport
-    ? [["../../../lib/skills17-reporter", { json: jsonOnlyReport }]]
-    : ["default", "../../../lib/skills17-reporter"],
-  testEnvironment: "node",
+    ? [["@skills17/jest-helpers", { json: jsonOnlyReport }]]
+    : ["default", "@skills17/jest-helpers"],
 };
 
 export default config;
