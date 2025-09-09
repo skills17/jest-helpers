@@ -43,10 +43,11 @@ export default class Skills17Reporter implements Reporter {
 	}
 
 	onTestResult(test: Test, testResult: TestResult, _aggregatedResults: AggregatedResult): void {
-		const isExtra = test.path.includes('/extra/');
+		const isExtraPath = test.path.includes('/extra/');
 		for (const result of testResult.testResults) {
+			const isExtra = isExtraPath || result.ancestorTitles.map(title => title.toLowerCase()).includes('extra');
 			this.testRun?.recordTest(
-				`${result.ancestorTitles.join(' > ')} > ${result.title}`,
+				`${result.ancestorTitles.filter(title => title.toLowerCase() !== 'extra').join(' > ')} > ${result.title}`,
 				result.title,
 				isExtra,
 				result.status === 'passed',
