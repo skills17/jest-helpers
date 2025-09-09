@@ -4,16 +4,17 @@ import process from 'node:process';
 
 export async function executeJest(
 	testName: string,
-	args: string,
+	args = '',
 	env?: Record<string, string>,
 ): Promise<{exitCode: number; output: string}> {
 	return new Promise(resolve => {
-		const bin = path.resolve(__dirname, '..', '..', 'bin', 'skills17-jest');
+		const bin = path.resolve(__dirname, '..', '..', 'node_modules', '.bin', 'jest');
 
 		// Execute jest in the subdirectory
 		const cmd = exec(`${bin} ${args}`, {
 			cwd: path.resolve(__dirname, testName),
-			env: {...process.env, ...env},
+			// eslint-disable-next-line @typescript-eslint/naming-convention
+			env: {...process.env, FORCE_COLOR: '0', ...env},
 		});
 
 		// Catch output

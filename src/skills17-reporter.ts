@@ -10,27 +10,21 @@ import {
 } from '@jest/reporters';
 import {type TestContext} from '@jest/test-result';
 import {type TestRun} from '@skills17/test-result';
-import * as NodeConfig from '@skills17/task-config';
-import * as Printer from '@skills17/test-result-printer';
+import NodeConfig from '@skills17/task-config';
+import Printer from '@skills17/test-result-printer';
 import uniqid from 'uniqid';
 
-// eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/no-unsafe-assignment
-const TaskConfig = ((NodeConfig as any).default).default;
-// eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/no-unsafe-assignment
-const TestResultPrinter = ((Printer as any).default).default;
-
-export default class Skills17JestReporter implements Reporter {
+export default class Skills17Reporter implements Reporter {
 	public testRun?: TestRun;
 	protected _globalConfig: Config.GlobalConfig;
 	private readonly isJson: boolean;
-	private readonly config: NodeConfig.default;
+	private readonly config: NodeConfig;
 
 	constructor(globalConfig: Config.GlobalConfig, options?: any) {
 		this._globalConfig = globalConfig;
 		this.isJson = Boolean(options.json);
 
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
-		this.config = new TaskConfig();
+		this.config = new NodeConfig();
 		this.config.loadFromFileSync();
 	}
 
@@ -61,11 +55,15 @@ export default class Skills17JestReporter implements Reporter {
 	}
 
 	onRunComplete(_test?: Set<TestContext>, _runResults?: AggregatedResult): Promise<void> | void {
+		if (!this.testRun) {
+			throw new Error('Test run failed: testRun is undefined');
+		}
+
 		if (this.isJson) {
-			console.log(JSON.stringify(this.testRun?.toJSON(), null, 2));
+			console.log();
+			console.log(JSON.stringify(this.testRun.toJSON(), null, 2));
 		} else {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
-			const printer: Printer.default = new TestResultPrinter(this.testRun);
+			const printer = new Printer(this.testRun);
 			console.log();
 			printer.print({
 				printFooter: true,
@@ -78,7 +76,7 @@ export default class Skills17JestReporter implements Reporter {
 		}
 	}
 
-	private storeTestRun(config: NodeConfig.default, testRun: TestRun): void {
+	private storeTestRun(config: NodeConfig, testRun: TestRun): void {
 		const historyDir = path.resolve(config.getProjectRoot(), '.history');
 		const historyFile = path.resolve(historyDir, `${uniqid()}.json`);
 
